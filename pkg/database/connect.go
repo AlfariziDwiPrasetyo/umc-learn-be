@@ -12,7 +12,7 @@ import (
 
 var DB *gorm.DB
 
-func Connect(cfg *configs.Config) {
+func Connect(cfg *configs.Config) *gorm.DB {
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%d sslmode=%s",
@@ -29,5 +29,5 @@ func Connect(cfg *configs.Config) {
 		log.Fatal("Failed to connect database", err)
 	}
 
-	DB = db
+	return db
 }

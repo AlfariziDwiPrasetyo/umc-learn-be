@@ -5,6 +5,9 @@ import (
 	"log"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
+	userHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/users"
+	userRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/users"
+	userService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/users"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/pkg/database"
 	"github.com/gin-gonic/gin"
 )
@@ -19,8 +22,15 @@ func main() {
 	}
 
 	// Database
-	database.Connect(cfg)
-	database.Migrate()
+	db := database.Connect(cfg)
+	database.Migrate(db)
+
+	// User
+	userRepo := userRepository.NewRepository(db)
+	userSvc := userService.NewService(cfg, userRepo)
+	userHandler := userHandler.NewHandler(r, userSvc)
+
+	userHandler.RegisterRoute()
 
 	// Run server
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
