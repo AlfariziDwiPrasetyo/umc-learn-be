@@ -1,4 +1,4 @@
-package users
+package authentications
 
 import (
 	"net/http"
@@ -21,7 +21,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 		return
 	}
 
-	err := h.UserSvc.SignUp(ctx, request)
+	err := h.AuthSvc.SignUp(ctx, request)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

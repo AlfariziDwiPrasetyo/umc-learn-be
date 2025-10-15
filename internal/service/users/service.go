@@ -11,6 +11,7 @@ type userRepo interface {
 	CreateUser(ctx context.Context, model users.User) error
 	GetUserById(ctx context.Context, id int64) (*users.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*users.User, error)
+	DeleteUser(ctx context.Context, id int64) error
 }
 
 type Service struct {

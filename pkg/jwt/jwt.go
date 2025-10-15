@@ -4,30 +4,24 @@ import (
 	"errors"
 	"time"
 
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/authentications"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type Tokens struct {
-	AccessToken  string
-	RefreshToken string
-}
-
-func CreateToken(id int64, email string, secretKey string) (*Tokens, error) {
+func CreateToken(id int64, secretKey string) (*authentications.Tokens, error) {
 	key := []byte(secretKey)
-	accessToken := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
-		"id":    id,
-		"email": email,
-		"exp":   time.Now().Add(10 * time.Minute).Unix(),
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id":  id,
+		"exp": time.Now().Add(10 * time.Minute).Unix(),
 	})
 	accessStr, err := accessToken.SignedString(key)
 	if err != nil {
 		return nil, err
 	}
 
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
-		"id":    id,
-		"email": email,
-		"exp":   time.Now().Add(7 * 24 * time.Hour).Unix(),
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id":  id,
+		"exp": time.Now().Add(7 * 24 * time.Hour).Unix(),
 	})
 	refreshStr, err := refreshToken.SignedString(key)
 
@@ -35,7 +29,7 @@ func CreateToken(id int64, email string, secretKey string) (*Tokens, error) {
 		return nil, err
 	}
 
-	return &Tokens{
+	return &authentications.Tokens{
 		AccessToken:  accessStr,
 		RefreshToken: refreshStr,
 	}, nil

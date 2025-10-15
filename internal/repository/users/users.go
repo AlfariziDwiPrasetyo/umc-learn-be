@@ -39,3 +39,16 @@ func (r *Repository) GetUserByEmail(ctx context.Context, email string) (*users.U
 
 	return &user, nil
 }
+
+func (r *Repository) DeleteUser(ctx context.Context, id int64) error {
+	result := r.Db.WithContext(ctx).Delete(&users.User{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+
+	return nil
+}
