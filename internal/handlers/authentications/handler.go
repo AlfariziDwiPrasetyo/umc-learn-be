@@ -11,6 +11,7 @@ type authService interface {
 	SignUp(ctx context.Context, req authentications.RegisterUser) error
 	SignIn(ctx context.Context, req authentications.LoginUser) (*authentications.Tokens, error)
 	Refresh(ctx context.Context, req authentications.RefreshTokenRequest) (*authentications.Tokens, error)
+	LogOut(ctx context.Context, refreshToken string) error
 }
 
 type Handler struct {
@@ -31,4 +32,5 @@ func (h *Handler) RegisterRoute() {
 	r.POST("sign-up", h.SignUp)
 	r.POST("sign-in", h.SignIn)
 	r.POST("refresh", h.Refresh)
+	r.POST("logout", h.LogOut)
 }

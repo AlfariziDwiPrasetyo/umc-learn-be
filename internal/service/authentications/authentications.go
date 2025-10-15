@@ -120,3 +120,13 @@ func (s *Service) Refresh(ctx context.Context, req authentications.RefreshTokenR
 	return token, nil
 
 }
+
+func (s *Service) LogOut(ctx context.Context, refreshToken string) error {
+	if refreshToken == "" {
+		return nil
+	}
+
+	_ = s.AuthRepository.RevokeToken(ctx, refreshToken)
+
+	return nil
+}

@@ -101,3 +101,21 @@ func (h *Handler) Refresh(c *gin.Context) {
 	})
 
 }
+
+func (h *Handler) LogOut(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	token := c.GetHeader("Authorization")
+	if len(token) > 7 && token[:7] == "Bearer " {
+		token = token[7:]
+	} else {
+		token = ""
+	}
+
+	_ = h.AuthSvc.LogOut(ctx, token)
+
+	c.JSON(200, gin.H{
+		"error":   false,
+		"message": "Logout successful",
+	})
+}

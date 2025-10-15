@@ -31,7 +31,7 @@ func main() {
 	// User
 	userRepo := userRepository.NewRepository(db)
 	userSvc := userService.NewService(cfg, userRepo)
-	userHandler := userHandler.NewHandler(r, userSvc)
+	userHandler := userHandler.NewHandler(r, cfg, userSvc)
 
 	userHandler.RegisterRoute()
 
