@@ -3,14 +3,14 @@ package authentications
 import (
 	"net/http"
 
-	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/users"
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/authentications"
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) SignUp(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	var request users.RegisterUser
+	var request authentications.RegisterUser
 
 	if err := c.ShouldBindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

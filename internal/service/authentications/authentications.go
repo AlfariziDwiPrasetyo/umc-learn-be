@@ -11,7 +11,20 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *Service) SignIn(ctx context.Context, req users.LoginUser) (*authentications.Tokens, error) {
+func (s *Service) StoreToken(ctx context.Context, refreshToken string, userID int64) error {
+
+	now := time.Now()
+
+	model := authentications.Authentications{
+		UserID:       userID,
+		RefreshToken: refreshToken,
+		CreatedAt:    now,
+		UpdatedAt:    now,
+	}
+	return s.AuthRepository.StoreToken(ctx, model)
+}
+
+func (s *Service) SignIn(ctx context.Context, req authentications.LoginUser) (*authentications.Tokens, error) {
 	user, err := s.UserRepository.GetUserByEmail(ctx, req.Email)
 
 	if err != nil {
@@ -34,11 +47,17 @@ func (s *Service) SignIn(ctx context.Context, req users.LoginUser) (*authenticat
 		return nil, err
 	}
 
+	err = s.StoreToken(ctx, token.RefreshToken, user.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return token, nil
 
 }
 
-func (s *Service) SignUp(ctx context.Context, req users.RegisterUser) error {
+func (s *Service) SignUp(ctx context.Context, req authentications.RegisterUser) error {
 	user, err := s.UserRepository.GetUserByEmail(ctx, req.Email)
 
 	if err != nil {

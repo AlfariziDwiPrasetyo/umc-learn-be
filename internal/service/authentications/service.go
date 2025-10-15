@@ -10,9 +10,9 @@ import (
 
 type (
 	authenticationsRepo interface {
-		StoreToken(ctx context.Context, model authentications.AuthenticationModel) error
+		StoreToken(ctx context.Context, model authentications.Authentications) error
 		UpdateToken(ctx context.Context, userID int64, newToken string) error
-		GetTokenByRefreshToken(ctx context.Context, refreshToken string) (*authentications.AuthenticationModel, error)
+		GetTokenByRefreshToken(ctx context.Context, refreshToken string) (*authentications.Authentications, error)
 		RevokeToken(ctx context.Context, refreshToken string) error
 	}
 

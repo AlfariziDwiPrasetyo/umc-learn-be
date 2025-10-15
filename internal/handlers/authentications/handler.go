@@ -4,13 +4,13 @@ import (
 	"context"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/authentications"
-	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/users"
 	"github.com/gin-gonic/gin"
 )
 
 type authService interface {
-	SignUp(ctx context.Context, req users.RegisterUser) error
-	SignIn(ctx context.Context, req users.LoginUser) (*authentications.Tokens, error)
+	SignUp(ctx context.Context, req authentications.RegisterUser) error
+	SignIn(ctx context.Context, req authentications.LoginUser) (*authentications.Tokens, error)
+	Refresh(ctx context.Context, req authentications.RefreshTokenRequest) (*authentications.Tokens, error)
 }
 
 type Handler struct {

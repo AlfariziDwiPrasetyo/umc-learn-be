@@ -4,24 +4,6 @@ import (
 	"time"
 )
 
-type (
-	RegisterUser struct {
-		Username string `json:"username" binding:"required"`
-		Email    string `json:"email" binding:"required,email"`
-		Major    string `json:"major" binding:"required"`
-		Password string `json:"password" binding:"required"`
-	}
-
-	LoginUser struct {
-		Email    string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required"`
-	}
-
-	RefreshToken struct {
-		RefreshToken string `json:"refresh_token" binding:"required"`
-	}
-)
-
 type User struct {
 	ID        int64  `gorm:"primaryKey;autoIncrement"`
 	Username  string `gorm:"not null"`
