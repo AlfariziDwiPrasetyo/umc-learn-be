@@ -12,6 +12,7 @@ type userRepo interface {
 	GetUserById(ctx context.Context, id int64) (*users.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*users.User, error)
 	DeleteUser(ctx context.Context, id int64) error
+	UpdateUser(ctx context.Context, userID int64, updates map[string]interface{}) error
 }
 
 type Service struct {

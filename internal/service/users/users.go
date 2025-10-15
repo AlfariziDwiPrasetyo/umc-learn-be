@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/users"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -17,4 +19,31 @@ func (s *Service) DeleteUser(ctx context.Context, id int64) error {
 	}
 
 	return nil
+}
+
+func (s *Service) UpdateUser(ctx context.Context, userID int64, req users.UpdateUserRequest) error {
+	updates := make(map[string]any)
+
+	if req.Username != nil {
+		updates["username"] = *req.Username
+	}
+	if req.Email != nil {
+		updates["email"] = *req.Email
+	}
+	if req.Major != nil {
+		updates["major"] = *req.Major
+	}
+	if req.Image != nil {
+		updates["image"] = *req.Image
+	}
+	if req.Password != nil {
+		pass, err := bcrypt.GenerateFromPassword([]byte(*req.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return err
+		}
+
+		updates["password"] = pass
+	}
+
+	return s.UserRepository.UpdateUser(ctx, userID, updates)
 }

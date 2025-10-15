@@ -52,3 +52,14 @@ func (r *Repository) DeleteUser(ctx context.Context, id int64) error {
 
 	return nil
 }
+
+func (r *Repository) UpdateUser(ctx context.Context, userID int64, updates map[string]any) error {
+	if len(updates) == 0 {
+		return nil
+	}
+
+	return r.Db.WithContext(ctx).
+		Model(&users.User{}).
+		Where("id = ?", userID).
+		Updates(updates).Error
+}

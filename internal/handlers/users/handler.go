@@ -5,11 +5,13 @@ import (
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/middleware"
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/users"
 	"github.com/gin-gonic/gin"
 )
 
 type userService interface {
 	DeleteUser(ctx context.Context, id int64) error
+	UpdateUser(ctx context.Context, userID int64, req users.UpdateUserRequest) error
 }
 
 type Handler struct {

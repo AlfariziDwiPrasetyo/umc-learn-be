@@ -4,6 +4,16 @@ import (
 	"time"
 )
 
+type (
+	UpdateUserRequest struct {
+		Username *string `json:"username"`
+		Email    *string `json:"email"`
+		Major    *string `json:"major"`
+		Image    *string `json:"image"`
+		Password *string `json:"password"`
+	}
+)
+
 type User struct {
 	ID        int64  `gorm:"primaryKey;autoIncrement"`
 	Username  string `gorm:"not null"`
