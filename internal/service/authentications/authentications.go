@@ -92,10 +92,26 @@ func (s *Service) Refresh(ctx context.Context, req authentications.RefreshTokenR
 	claims, err := jwt.ValidateToken(string(req.RefreshToken), s.Cfg.Service.SecretKey)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.New("invalid or expired refresh token")
+	}
+
+	authData, err := s.AuthRepository.GetTokenByRefreshToken(ctx, req.RefreshToken)
+
+	if err != nil {
+		return nil, errors.New("refresh token not found")
+	}
+
+	if authData.Revoked {
+		return nil, errors.New("refresh token has been revoked")
 	}
 
 	token, err := jwt.CreateToken(claims, s.Cfg.Service.SecretKey)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = s.AuthRepository.UpdateToken(ctx, claims, token.RefreshToken)
 
 	if err != nil {
 		return nil, err

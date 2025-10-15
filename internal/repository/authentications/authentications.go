@@ -2,6 +2,7 @@ package authentications
 
 import (
 	"context"
+	"time"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/authentications"
 )
@@ -18,8 +19,11 @@ func (r *Repository) StoreToken(ctx context.Context, model authentications.Authe
 func (r *Repository) UpdateToken(ctx context.Context, userID int64, newToken string) error {
 	return r.Db.WithContext(ctx).
 		Model(&authentications.Authentications{}).
-		Where("user_id = ?", userID).
-		Update("refresh_token", newToken).Error
+		Where("user_id = ? AND revoked = ?", userID, false).
+		Updates(map[string]interface{}{
+			"refresh_token": newToken,
+			"updated_at":    time.Now(),
+		}).Error
 }
 
 func (r *Repository) GetTokenByRefreshToken(ctx context.Context, refreshToken string) (*authentications.Authentications, error) {

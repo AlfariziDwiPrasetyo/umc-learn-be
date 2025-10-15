@@ -30,4 +30,5 @@ func (h *Handler) RegisterRoute() {
 
 	r.POST("sign-up", h.SignUp)
 	r.POST("sign-in", h.SignIn)
+	r.POST("refresh", h.Refresh)
 }
