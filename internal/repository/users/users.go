@@ -19,7 +19,7 @@ func (r *Repository) GetUserById(ctx context.Context, id int64) (*users.User, er
 	err := r.Db.WithContext(ctx).First(&user, id).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, gorm.ErrRecordNotFound
 	} else if err != nil {
 		return nil, err
 	}

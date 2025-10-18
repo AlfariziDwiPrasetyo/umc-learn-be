@@ -12,6 +12,7 @@ import (
 type userService interface {
 	DeleteUser(ctx context.Context, id int64) error
 	UpdateUser(ctx context.Context, userID int64, req users.UpdateUserRequest) error
+	GetUser(ctx context.Context, userID int64) (*users.User, error)
 }
 
 type Handler struct {
@@ -32,4 +33,7 @@ func (h *Handler) RegisterRoute() {
 	route := h.Group("users")
 
 	route.Use(middleware.AuthMiddleware(h.cfg.Service.SecretKey))
+	route.PATCH(":id", h.UpdateUser)
+	route.GET(":id", h.GetUser)
+	route.DELETE(":id", h.DeleteUser)
 }

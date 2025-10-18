@@ -45,5 +45,26 @@ func (s *Service) UpdateUser(ctx context.Context, userID int64, req users.Update
 		updates["password"] = pass
 	}
 
-	return s.UserRepository.UpdateUser(ctx, userID, updates)
+	err := s.UserRepository.UpdateUser(ctx, userID, updates)
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errors.New("user not found")
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (s *Service) GetUser(ctx context.Context, userID int64) (*users.User, error) {
+	user, err := s.UserRepository.GetUserById(ctx, userID)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
+
+	return user, nil
 }
