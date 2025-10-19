@@ -8,6 +8,7 @@ import (
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/posts"
 	"github.com/gosimple/slug"
+	"gorm.io/gorm"
 )
 
 func (s *Service) GetPosts(ctx context.Context, limit int) ([]posts.Post, error) {
@@ -60,6 +61,9 @@ func (s *Service) GetPostById(ctx context.Context, postID int64) (*posts.Post, e
 	post, err := s.postRepo.GetPostById(ctx, postID)
 
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("post not found")
+		}
 		return nil, err
 	}
 

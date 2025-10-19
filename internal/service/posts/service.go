@@ -17,10 +17,10 @@ type postRepository interface {
 
 type Service struct {
 	postRepo postRepository
-	cfg      configs.Config
+	cfg      *configs.Config
 }
 
-func NewService(cfg configs.Config, postRepo postRepository) *Service {
+func NewService(cfg *configs.Config, postRepo postRepository) *Service {
 	return &Service{
 		postRepo: postRepo,
 		cfg:      cfg,

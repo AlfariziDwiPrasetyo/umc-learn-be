@@ -2,14 +2,13 @@ package posts
 
 import (
 	"context"
-	"errors"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/posts"
 	"gorm.io/gorm"
 )
 
 func (r *Repository) CreatePost(ctx context.Context, post posts.Post) error {
-	return r.Db.WithContext(ctx).Create(post).Error
+	return r.Db.WithContext(ctx).Create(&post).Error
 }
 
 func (r *Repository) GetPosts(ctx context.Context, limit int) ([]posts.Post, error) {
@@ -23,10 +22,6 @@ func (r *Repository) GetPosts(ctx context.Context, limit int) ([]posts.Post, err
 func (r *Repository) GetPostById(ctx context.Context, id int64) (*posts.Post, error) {
 	var post posts.Post
 	err := r.Db.WithContext(ctx).First(&post, id).Error
-
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
-	}
 
 	if err != nil {
 		return nil, err

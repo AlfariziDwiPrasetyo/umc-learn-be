@@ -6,10 +6,13 @@ import (
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
 	authHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/authentications"
+	postHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/posts"
 	userHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/users"
 	authRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/authentications"
+	postRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/posts"
 	userRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/users"
 	authService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/authentications"
+	postService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/posts"
 	userService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/users"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/pkg/database"
 	"github.com/gin-gonic/gin"
@@ -41,6 +44,13 @@ func main() {
 	authHandler := authHandler.NewHandler(r, authSvc)
 
 	authHandler.RegisterRoute()
+
+	// Post
+	postRepo := postRepository.NewRepository(db)
+	postSvc := postService.NewService(cfg, postRepo)
+	postHandler := postHandler.NewHandler(r, cfg, postSvc)
+
+	postHandler.RegisterRoute()
 
 	// Run server
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
