@@ -4,8 +4,8 @@ import "time"
 
 type (
 	PostRequest struct {
-		Title string `json:"title"`
-		Body  string `json:"body"`
+		Title string `json:"title" binding:"required"`
+		Body  string `json:"body" binding:"required"`
 		Image string `json:"image"`
 	}
 	PostUpdateRequest struct {

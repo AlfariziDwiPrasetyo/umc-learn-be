@@ -47,7 +47,7 @@ func (h *Handler) UpdatePost(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
-			"message": err.Error(),
+			"message": "invalid id param",
 		})
 
 		return
@@ -86,7 +86,7 @@ func (h *Handler) DeletePost(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
-			"message": err.Error(),
+			"message": "invalid id param",
 		})
 
 		return
