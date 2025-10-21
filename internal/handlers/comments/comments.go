@@ -10,7 +10,7 @@ import (
 
 func (h *Handler) CreateComment(c *gin.Context) {
 	ctx := c.Request.Context()
-	userID := c.GetInt64("id")
+	userID := c.GetInt64("userID")
 	postIDParam := c.Param("postID")
 
 	postID, err := strconv.ParseInt(postIDParam, 10, 64)

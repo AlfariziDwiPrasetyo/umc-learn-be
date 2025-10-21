@@ -12,7 +12,7 @@ import (
 
 func (h *Handler) CreatePost(c *gin.Context) {
 	ctx := c.Request.Context()
-	userID := c.GetInt64("id")
+	userID := c.GetInt64("userID")
 
 	var req posts.PostRequest
 
