@@ -12,8 +12,10 @@ func (r *Repository) CreatePost(ctx context.Context, post posts.Post) error {
 }
 
 func (r *Repository) GetPosts(ctx context.Context, limit int) ([]posts.Post, error) {
+
 	var posts []posts.Post
-	if err := r.Db.WithContext(ctx).Limit(limit).Find(&posts).Error; err != nil {
+	if err := r.Db.WithContext(ctx).Limit(limit).Preload("User").Preload("Comments").
+		Preload("Comments.User").Find(&posts).Error; err != nil {
 		return nil, err
 	}
 	return posts, nil
@@ -21,7 +23,8 @@ func (r *Repository) GetPosts(ctx context.Context, limit int) ([]posts.Post, err
 
 func (r *Repository) GetPostById(ctx context.Context, id int64) (*posts.Post, error) {
 	var post posts.Post
-	err := r.Db.WithContext(ctx).First(&post, id).Error
+	err := r.Db.WithContext(ctx).First(&post, id).Preload("User").Preload("Comments").
+		Preload("Comments.User").Error
 
 	if err != nil {
 		return nil, err
