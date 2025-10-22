@@ -52,7 +52,7 @@ func (s *Service) UpdateComment(ctx context.Context, commentID int64, req commen
 	}
 
 	if req.Text != "" {
-		updates["image"] = req.Text
+		updates["text"] = req.Text
 	}
 
 	err := s.CommentRepo.UpdateComment(ctx, commentID, updates)
@@ -65,5 +65,7 @@ func (s *Service) UpdateComment(ctx context.Context, commentID int64, req commen
 }
 
 func (s *Service) DeleteComment(ctx context.Context, commentID int64) error {
-	return s.DeleteComment(ctx, commentID)
+
+	return s.CommentRepo.DeleteComment(ctx, commentID)
+
 }

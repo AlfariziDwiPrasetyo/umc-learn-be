@@ -55,7 +55,7 @@ func (h *Handler) CreateComment(c *gin.Context) {
 func (h *Handler) GetAllCommentByPostID(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	postIDParam := c.Param("postID")
+	postIDParam := c.Param("id")
 
 	postID, err := strconv.ParseInt(postIDParam, 10, 64)
 	if err != nil {
@@ -148,7 +148,7 @@ func (h *Handler) DeleteComment(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusInternalServerError, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"error":   false,
 		"message": "comment deleted",
 	})
