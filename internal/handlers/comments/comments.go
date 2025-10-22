@@ -86,13 +86,13 @@ func (h *Handler) GetAllCommentByPostID(c *gin.Context) {
 
 func (h *Handler) UpdateComment(c *gin.Context) {
 	ctx := c.Request.Context()
-	postIDParam := c.Param("postID")
+	commentIDParam := c.Param("commentID")
 
-	postID, err := strconv.ParseInt(postIDParam, 10, 64)
+	commentID, err := strconv.ParseInt(commentIDParam, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
-			"message": "invalid userID param",
+			"message": "invalid commentID param",
 		})
 
 		return
@@ -109,7 +109,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 		return
 	}
 
-	err = h.CommentSvc.UpdateComment(ctx, postID, req)
+	err = h.CommentSvc.UpdateComment(ctx, commentID, req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   true,
@@ -127,18 +127,18 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 
 func (h *Handler) DeleteComment(c *gin.Context) {
 	ctx := c.Request.Context()
-	postIDParam := c.Param("postID")
+	commentIDParam := c.Param("commentID")
 
-	postID, err := strconv.ParseInt(postIDParam, 10, 64)
+	commentID, err := strconv.ParseInt(commentIDParam, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
-			"message": "invalid postid param",
+			"message": "invalid commentID param",
 		})
 		return
 	}
 
-	err = h.CommentSvc.DeleteComment(ctx, postID)
+	err = h.CommentSvc.DeleteComment(ctx, commentID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   true,
