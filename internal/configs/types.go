@@ -16,4 +16,10 @@ type Config struct {
 		Name     string `yaml:"name"`
 		SSLMode  string `yaml:"sslmode"`
 	} `yaml:"database"`
+	Cloudinary struct {
+		APIKey    string `yaml:"apiKey"`
+		APISecret string `yaml:"apiSecret"`
+		CloudName string `yaml:"cloudName"`
+		Folder    string `yaml:"folder/"`
+	} `yaml:"cloudinary"`
 }
