@@ -1,6 +1,7 @@
 package posts
 
 import (
+	"mime/multipart"
 	"time"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/comments"
@@ -9,14 +10,15 @@ import (
 
 type (
 	PostRequest struct {
-		Title string `json:"title" binding:"required"`
-		Body  string `json:"body" binding:"required"`
-		Image string `json:"image"`
+		Title string                `form:"title" binding:"required"`
+		Body  string                `form:"body" binding:"required"`
+		Image *multipart.FileHeader `form:"image"`
 	}
+
 	PostUpdateRequest struct {
-		Title *string `json:"title"`
-		Body  *string `json:"body"`
-		Image *string `json:"image"`
+		Title *string               `form:"title"`
+		Body  *string               `form:"body"`
+		Image *multipart.FileHeader `form:"image"`
 	}
 )
 

@@ -20,6 +20,6 @@ type Config struct {
 		APIKey    string `yaml:"apiKey"`
 		APISecret string `yaml:"apiSecret"`
 		CloudName string `yaml:"cloudName"`
-		Folder    string `yaml:"folder/"`
+		Folder    string `yaml:"folder"`
 	} `yaml:"cloudinary"`
 }

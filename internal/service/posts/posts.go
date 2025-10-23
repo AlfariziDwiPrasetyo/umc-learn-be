@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/posts"
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/utils"
 	"github.com/gosimple/slug"
 	"gorm.io/gorm"
 )
@@ -30,11 +31,21 @@ func (s *Service) CreatePost(ctx context.Context, userID int64, req posts.PostRe
 	id := time.Now().UnixNano()
 	slug := fmt.Sprintf("%s-%d", slug.Make(req.Title), id)
 
+	var imageUrl string
+	if req.Image != nil {
+		url, err := utils.UploadToCloudinary(ctx, req.Image, s.cld, s.cfg)
+		if err != nil {
+			return errors.New("failed to upload image")
+		}
+
+		imageUrl = url
+	}
+
 	post := posts.Post{
 		ID:        id,
 		Title:     req.Title,
 		Body:      req.Body,
-		Image:     req.Image,
+		Image:     imageUrl,
 		UserID:    userID,
 		Slug:      slug,
 		CreatedAt: now,
@@ -48,6 +59,11 @@ func (s *Service) DeletePost(ctx context.Context, postID int64) error {
 	post, err := s.postRepo.GetPostById(ctx, postID)
 	if err != nil {
 		return err
+	}
+
+	err = utils.DeleteFromCloudinary(ctx, s.cld, post.Image)
+	if err != nil {
+		return fmt.Errorf("failed to delete image : %s", err)
 	}
 
 	if post == nil {
@@ -88,10 +104,20 @@ func (s *Service) UpdatePost(ctx context.Context, postID int64, req posts.PostUp
 	if req.Body != nil {
 		updates["body"] = *req.Body
 	}
+
 	if req.Image != nil {
-		updates["image"] = *req.Image
+		err := utils.DeleteFromCloudinary(ctx, s.cld, post.Image)
+
+		if err != nil {
+			return fmt.Errorf("failed to delete image: %w", err)
+		}
+
+		imageUrl, err := utils.UploadToCloudinary(ctx, req.Image, s.cld, s.cfg)
+
+		updates["image"] = imageUrl
 	}
 
-	return s.postRepo.UpdatePost(ctx, postID, updates)
+	updates["updated_at"] = time.Now()
 
+	return s.postRepo.UpdatePost(ctx, postID, updates)
 }

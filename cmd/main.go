@@ -17,6 +17,7 @@ import (
 	commentService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/comments"
 	postService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/posts"
 	userService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/users"
+	"github.com/alfarizidwiprasetyo/be-umc-learn/pkg/cloudinary"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/pkg/database"
 	"github.com/gin-gonic/gin"
 )
@@ -29,6 +30,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to parse YAML config: %v", err)
 	}
+
+	// Cloudinary
+	cld, err := cloudinary.Init(cfg)
 
 	// Database
 	db := database.Connect(cfg)
@@ -50,7 +54,7 @@ func main() {
 
 	// Post
 	postRepo := postRepository.NewRepository(db)
-	postSvc := postService.NewService(cfg, postRepo)
+	postSvc := postService.NewService(cfg, postRepo, cld)
 	postHandler := postHandler.NewHandler(r, cfg, postSvc)
 
 	postHandler.RegisterRoute()

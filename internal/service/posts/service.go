@@ -5,6 +5,7 @@ import (
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/posts"
+	"github.com/cloudinary/cloudinary-go/v2"
 )
 
 type postRepository interface {
@@ -18,11 +19,13 @@ type postRepository interface {
 type Service struct {
 	postRepo postRepository
 	cfg      *configs.Config
+	cld      *cloudinary.Cloudinary
 }
 
-func NewService(cfg *configs.Config, postRepo postRepository) *Service {
+func NewService(cfg *configs.Config, postRepo postRepository, cld *cloudinary.Cloudinary) *Service {
 	return &Service{
 		postRepo: postRepo,
 		cfg:      cfg,
+		cld:      cld,
 	}
 }

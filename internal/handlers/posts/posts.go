@@ -16,7 +16,7 @@ func (h *Handler) CreatePost(c *gin.Context) {
 
 	var req posts.PostRequest
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
 			"message": err.Error(),
@@ -54,7 +54,7 @@ func (h *Handler) UpdatePost(c *gin.Context) {
 	}
 
 	var req posts.PostUpdateRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
 			"message": err.Error(),
