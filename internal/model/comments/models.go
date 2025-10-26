@@ -15,12 +15,12 @@ type (
 )
 
 type Comments struct {
-	ID        int64      `gorm:"primaryKey" binding:"required"`
-	UserID    int64      `gorm:"user_id" binding:"required"`
-	PostID    int64      `gorm:"post_id" binding:"required"`
-	Text      string     `gorm:"text" binding:"required"`
-	Image     string     `gorm:"image" binding:"required"`
-	User      users.User `gorm:"foreignKey:UserID;references:ID"`
-	CreatedAt time.Time  `gorm:"created_at" binding:"required"`
-	UpdatedAt time.Time  `gorm:"updated_at" binding:"required"`
+	ID        int64      `gorm:"primaryKey;autoIncrement"`
+	UserID    int64      `gorm:"not null;index"`
+	PostID    int64      `gorm:"not null;index"`
+	Text      string     `gorm:"type:text;not null"`
+	Image     string     `gorm:"type:text"`
+	User      users.User `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
+	CreatedAt time.Time  `gorm:"autoCreateTime"`
+	UpdatedAt time.Time  `gorm:"autoUpdateTime"`
 }

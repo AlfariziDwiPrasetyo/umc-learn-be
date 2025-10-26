@@ -23,14 +23,14 @@ type (
 )
 
 type Post struct {
-	ID        int64               `gorm:"primaryKey" binding:"required"`
-	Title     string              `gorm:"title" binding:"required"`
-	Body      string              `gorm:"body" binding:"required"`
-	UserID    int64               `gorm:"user_id" binding:"required"`
-	Image     string              `gorm:"image"`
-	Slug      string              `gorm:"slug" binding:"required"`
-	User      users.User          `gorm:"foreignKey:UserID;references:ID"`
-	Comments  []comments.Comments `gorm:"foreignKey:PostID;references:ID" json:"comments"`
-	CreatedAt time.Time           `gorm:"created_at" binding:"required"`
-	UpdatedAt time.Time           `gorm:"updated_at" binding:"required"`
+	ID        int64               `gorm:"primaryKey;autoIncrement"`
+	Title     string              `gorm:"type:varchar(255);not null"`
+	Body      string              `gorm:"type:text;not null"`
+	UserID    int64               `gorm:"not null;index"`
+	Image     string              `gorm:"type:text"`
+	Slug      string              `gorm:"type:varchar(255);uniqueIndex"`
+	User      users.User          `gorm:"foreignKey:UserID;references:ID;constraint:OnDelete:CASCADE"`
+	Comments  []comments.Comments `gorm:"foreignKey:PostID;references:ID;constraint:OnDelete:CASCADE" json:"comments"`
+	CreatedAt time.Time           `gorm:"autoCreateTime"`
+	UpdatedAt time.Time           `gorm:"autoUpdateTime"`
 }
