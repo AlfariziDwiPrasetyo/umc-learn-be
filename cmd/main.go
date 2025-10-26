@@ -7,14 +7,17 @@ import (
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
 	authHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/authentications"
 	commentHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/comments"
+	likeHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/likes"
 	postHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/posts"
 	userHandler "github.com/alfarizidwiprasetyo/be-umc-learn/internal/handlers/users"
 	authRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/authentications"
 	commentRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/comments"
+	likeRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/likes"
 	postRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/posts"
 	userRepository "github.com/alfarizidwiprasetyo/be-umc-learn/internal/repository/users"
 	authService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/authentications"
 	commentService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/comments"
+	likeService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/likes"
 	postService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/posts"
 	userService "github.com/alfarizidwiprasetyo/be-umc-learn/internal/service/users"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/pkg/cloudinary"
@@ -65,6 +68,13 @@ func main() {
 	commentHandler := commentHandler.NewHandler(r, cfg, commentSvc)
 
 	commentHandler.RegisterRoute()
+
+	// Likes
+	likeRepo := likeRepository.NewRepository(db)
+	likeSvc := likeService.NewService(cfg, likeRepo)
+	likeHandler := likeHandler.NewHandler(r, likeSvc, cfg)
+
+	likeHandler.RegisterRoute()
 
 	// Run server
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
