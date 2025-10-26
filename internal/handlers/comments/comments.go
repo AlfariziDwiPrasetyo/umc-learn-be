@@ -11,7 +11,7 @@ import (
 func (h *Handler) CreateComment(c *gin.Context) {
 	ctx := c.Request.Context()
 	userID := c.GetInt64("userID")
-	postIDParam := c.Param("postID")
+	postIDParam := c.Param("id")
 
 	postID, err := strconv.ParseInt(postIDParam, 10, 64)
 
@@ -26,7 +26,7 @@ func (h *Handler) CreateComment(c *gin.Context) {
 
 	var req comments.CommentRequest
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
 			"message": err.Error(),
@@ -100,7 +100,7 @@ func (h *Handler) UpdateComment(c *gin.Context) {
 
 	var req comments.CommentRequest
 
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   true,
 			"message": err.Error(),

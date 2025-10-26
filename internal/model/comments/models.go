@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"mime/multipart"
 	"time"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/users"
@@ -8,8 +9,8 @@ import (
 
 type (
 	CommentRequest struct {
-		Text  string `json:"text"`
-		Image string `json:"image"`
+		Text  string                `form:"text"`
+		Image *multipart.FileHeader `form:"image"`
 	}
 )
 

@@ -61,7 +61,7 @@ func main() {
 
 	// Comment
 	commentRepo := commentRepository.NewRepository(db)
-	commentSvc := commentService.NewService(cfg, commentRepo)
+	commentSvc := commentService.NewService(cfg, commentRepo, cld)
 	commentHandler := commentHandler.NewHandler(r, cfg, commentSvc)
 
 	commentHandler.RegisterRoute()

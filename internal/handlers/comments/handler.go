@@ -34,11 +34,11 @@ func NewHandler(api *gin.Engine, cfg *configs.Config, commentSvc CommentService)
 func (h *Handler) RegisterRoute() {
 	h.GET("/posts/:id/comments", h.GetAllCommentByPostID)
 
-	r := h.Group("comments")
+	r := h.Group("/")
 	r.Use(middleware.AuthMiddleware(h.Cfg.Service.SecretKey))
 	{
-		r.POST(":postID", h.CreateComment)
-		r.PATCH(":commentID", h.UpdateComment)
-		r.DELETE(":commentID", h.DeleteComment)
+		r.POST("/posts/:id/comments", h.CreateComment)
+		r.PATCH("/comments/:commentID", h.UpdateComment)
+		r.DELETE("/comments/:commentID", h.DeleteComment)
 	}
 }

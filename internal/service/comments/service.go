@@ -5,6 +5,7 @@ import (
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/comments"
+	"github.com/cloudinary/cloudinary-go/v2"
 )
 
 type CommentsRepository interface {
@@ -18,11 +19,13 @@ type CommentsRepository interface {
 type Service struct {
 	CommentRepo CommentsRepository
 	cfg         *configs.Config
+	cld         *cloudinary.Cloudinary
 }
 
-func NewService(cfg *configs.Config, commentRepo CommentsRepository) *Service {
+func NewService(cfg *configs.Config, commentRepo CommentsRepository, cld *cloudinary.Cloudinary) *Service {
 	return &Service{
 		CommentRepo: commentRepo,
 		cfg:         cfg,
+		cld:         cld,
 	}
 }
