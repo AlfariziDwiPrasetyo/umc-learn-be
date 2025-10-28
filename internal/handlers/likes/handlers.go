@@ -32,7 +32,7 @@ func NewHandler(api *gin.Engine, likesSvc likesService, cfg *configs.Config) *Ha
 
 func (h *Handler) RegisterRoute() {
 	r := h.Group("/posts")
-	r.GET("/:id/likes")
+	r.GET("/:id/likes", h.GetLikesByPostID)
 
 	r.Use(middleware.AuthMiddleware(h.Cfg.Service.SecretKey))
 	{
