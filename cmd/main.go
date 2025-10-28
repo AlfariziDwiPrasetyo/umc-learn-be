@@ -23,6 +23,9 @@ func main() {
 
 	// Cloudinary
 	cld, err := cloudinary.Init(cfg)
+	if err != nil {
+		log.Fatalf("failed to init cloudinary : %v", err)
+	}
 
 	// Database
 	db := database.Connect(cfg)
