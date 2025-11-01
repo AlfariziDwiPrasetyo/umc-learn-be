@@ -6,6 +6,8 @@
 *.test
 *.out
 
+.env
+
 /bin/
 /build/
 /dist/
