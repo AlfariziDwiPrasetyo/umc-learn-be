@@ -23,8 +23,12 @@ func (r *Repository) GetPosts(ctx context.Context, limit int) ([]posts.Post, err
 
 func (r *Repository) GetPostById(ctx context.Context, id int64) (*posts.Post, error) {
 	var post posts.Post
-	err := r.Db.WithContext(ctx).First(&post, id).Preload("User").Preload("Comments").
-		Preload("Comments.User").Error
+	err := r.Db.WithContext(ctx).
+		Preload("User").
+		Preload("Comments").
+		Preload("Comments.User").
+		Where("id = ?", id).First(&post).
+		Error
 
 	if err != nil {
 		return nil, err

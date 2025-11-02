@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/dto"
 	"github.com/gin-gonic/gin"
 )
 
@@ -92,9 +93,11 @@ func (h *Handler) GetLikesByPostID(c *gin.Context) {
 		return
 	}
 
+	data := dto.ToLikeResponses(likes)
+
 	c.JSON(http.StatusOK, gin.H{
 		"error":   false,
 		"message": "likes retrieved",
-		"data":    likes,
+		"data":    data,
 	})
 }

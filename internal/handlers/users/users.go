@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/dto"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/users"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -125,10 +126,12 @@ func (h *Handler) GetUser(c *gin.Context) {
 		return
 	}
 
+	data := dto.ToUserResponse(*user)
+
 	c.JSON(http.StatusOK, gin.H{
 		"error":   false,
 		"message": "User retrieved",
-		"data":    user,
+		"data":    data,
 	})
 
 }

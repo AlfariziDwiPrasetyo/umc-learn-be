@@ -2,9 +2,11 @@ package posts
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/dto"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/posts"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -131,10 +133,12 @@ func (h *Handler) GetAllPost(c *gin.Context) {
 		})
 	}
 
+	data := dto.ToPostResponses(posts)
+
 	c.JSON(http.StatusOK, gin.H{
 		"error":   false,
 		"message": "posts retrieved",
-		"data":    posts,
+		"data":    data,
 	})
 }
 
@@ -156,7 +160,7 @@ func (h *Handler) GetPostById(c *gin.Context) {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{
 				"error":   true,
-				"message": "User not found",
+				"message": "Post not found",
 			})
 
 			return
@@ -170,9 +174,11 @@ func (h *Handler) GetPostById(c *gin.Context) {
 		return
 	}
 
+	data := dto.ToPostResponse(*post)
+	fmt.Println(post)
 	c.JSON(http.StatusOK, gin.H{
 		"error":   false,
 		"message": "posts retrieved",
-		"data":    post,
+		"data":    data,
 	})
 }

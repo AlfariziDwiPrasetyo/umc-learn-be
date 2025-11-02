@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/dto"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/model/comments"
 	"github.com/gin-gonic/gin"
 )
@@ -67,7 +68,7 @@ func (h *Handler) GetAllCommentByPostID(c *gin.Context) {
 		return
 	}
 
-	posts, err := h.CommentSvc.GetAllCommentsByPostID(ctx, postID)
+	comments, err := h.CommentSvc.GetAllCommentsByPostID(ctx, postID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   true,
@@ -77,10 +78,12 @@ func (h *Handler) GetAllCommentByPostID(c *gin.Context) {
 		return
 	}
 
+	data := dto.ToCommentResponses(comments)
+
 	c.JSON(http.StatusOK, gin.H{
 		"error":   false,
 		"message": "comments retrieved",
-		"data":    posts,
+		"data":    data,
 	})
 }
 
