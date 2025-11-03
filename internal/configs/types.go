@@ -22,4 +22,8 @@ type Config struct {
 		CloudName string `yaml:"cloudName"`
 		Folder    string `yaml:"folder"`
 	} `yaml:"cloudinary"`
+	Cors struct {
+		AllowOrigins     []string `yaml:"allow_origins"`
+		AllowCredentials bool     `yaml:"allow_credentials"`
+	} `yaml:"cors"`
 }

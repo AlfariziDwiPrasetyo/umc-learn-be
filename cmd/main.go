@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/configs"
+	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/middleware"
 	"github.com/alfarizidwiprasetyo/be-umc-learn/internal/modules"
 
 	"github.com/alfarizidwiprasetyo/be-umc-learn/pkg/cloudinary"
@@ -30,6 +31,8 @@ func main() {
 	// Database
 	db := database.Connect(cfg)
 	database.Migrate(db)
+
+	r.Use(middleware.CORSMiddleware(cfg))
 
 	// Register Module
 	modules.RegisterAll(r, db, cfg, cld)
